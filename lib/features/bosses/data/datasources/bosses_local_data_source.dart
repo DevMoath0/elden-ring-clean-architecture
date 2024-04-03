@@ -29,7 +29,7 @@ class BossesLocalDataSourceImpl implements BossesLocalDataSource {
     final jsonString = sharedPreferences.getString(CACHED_BOSSES);
 
     if (jsonString != null) {
-      return Future.value(BossesModel.fromJson(jsonDecode(jsonString!)));
+      return Future.value(BossesModel.fromJson(jsonDecode(jsonString)));
     } else {
       throw CacheException();
     }

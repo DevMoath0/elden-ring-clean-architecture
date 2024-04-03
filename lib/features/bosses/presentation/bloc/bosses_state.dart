@@ -18,7 +18,7 @@ final class Empty extends BossesState {
 
 class Loading extends BossesState {
   @override
-  List<Object> get props => throw UnimplementedError('Loading');
+  List<Object> get props => [];
 }
 
 class Loaded extends BossesState {

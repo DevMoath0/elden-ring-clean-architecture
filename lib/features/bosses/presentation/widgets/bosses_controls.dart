@@ -29,7 +29,7 @@ class _BossesControlsState extends State<BossesControls> {
             Expanded(
               child: ElevatedButton(
                 onPressed: dispatchRandom,
-                child: const Text('Get random Trivia'),
+                child: const Text('Get Bosses'),
               ),
             ),
           ],

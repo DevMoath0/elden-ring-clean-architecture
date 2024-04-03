@@ -1,3 +1,5 @@
+import 'package:elden_ring_cl/features/bosses/presentation/widgets/boss_item.dart';
+import 'package:elden_ring_cl/features/bosses/presentation/widgets/bosses_controls.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/bosses.dart';
@@ -9,26 +11,13 @@ class BossesDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height / 3,
       child: Center(
         child: Column(
           children: [
-            Text(
-              bosses.name,
-              style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-            ),
-            Expanded(
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Text(
-                    bosses.description,
-                    style: const TextStyle(fontSize: 25),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
+            BossItem(bosses: bosses),
+            //BossesControls(),
           ],
         ),
       ),

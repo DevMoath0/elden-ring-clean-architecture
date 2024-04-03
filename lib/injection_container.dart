@@ -8,6 +8,8 @@ import 'package:elden_ring_cl/features/bosses/domain/usecases/get_bosses.dart';
 import 'package:elden_ring_cl/features/bosses/presentation/bloc/bosses_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 import 'core/network/network_info.dart';
 
@@ -36,15 +38,20 @@ Future<void> init() async {
   );
 
   // Data sources
-  serviceLocator.registerLazySingleton<BossesRemoteDataSource>(
-    () => BossesRemoteDataSourceImpl(
-      dio: serviceLocator(),
-    ),
+  serviceLocator.registerLazySingleton<http.Client>(
+    () => http.Client(),
   );
 
   serviceLocator.registerLazySingleton<BossesLocalDataSource>(
     () => BossesLocalDataSourceImpl(
       sharedPreferences: serviceLocator(),
+    ),
+  );
+
+  // Register BossesRemoteDataSource
+  serviceLocator.registerLazySingleton<BossesRemoteDataSource>(
+    () => BossesRemoteDataSourceImpl(
+      client: serviceLocator(),
     ),
   );
 

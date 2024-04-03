@@ -19,21 +19,22 @@ class BossesBloc extends Bloc<BossesEvent, BossesState> {
     on<GetForBosses>(_getBossesHandler);
   }
 
-  // For the RandomNumberTrivia
+  // For the Bosses
   Future<void> _getBossesHandler(
     GetForBosses event,
     Emitter<BossesState> emit,
   ) async {
+    print('In handler *********************************');
     emit(Loading());
 
-    final failureOrTrivia = await getBosses(NoParams());
+    final result = await getBosses(NoParams());
 
-    failureOrTrivia.fold(
+    result.fold(
       (failure) {
         emit(Error(message: _mapFailureToMessage(failure)));
       },
-      (boss) {
-        emit(Loaded(bosses: boss));
+      (bosses) {
+        emit(Loaded(bosses: bosses));
       },
     );
   }

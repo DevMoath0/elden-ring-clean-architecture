@@ -7,10 +7,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../injection_container.dart';
 import '../bloc/bosses_bloc.dart';
+import '../widgets/boss_item.dart';
 import '../widgets/bosses_controls.dart';
 
-class BossesScreen extends StatelessWidget {
+class BossesScreen extends StatefulWidget {
   const BossesScreen({super.key});
+
+  @override
+  State<BossesScreen> createState() => _BossesScreenState();
+}
+
+class _BossesScreenState extends State<BossesScreen> {
+  late List<Bosses> allBosses;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //BlocProvider.of<BossesBloc>(context).add(GetForBosses());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,41 +35,42 @@ class BossesScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
       ),
+      body: buildBody(context),
     );
   }
-}
 
-BlocProvider<BossesBloc> buildBody(BuildContext context) {
-  return BlocProvider(
-    create: (_) => serviceLocator<BossesBloc>(),
-    child: Center(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            BlocBuilder<BossesBloc, BossesState>(
-              builder: (context, state) {
-                if (state is Empty) {
-                  return const MessageDisplay(message: 'Start Searching!');
-                } else if (state is Loading) {
-                  return const LoadingWidget();
-                } else if (state is Loaded) {
-                  return BossesDisplay(bosses: state.bosses);
-                } else if (state is Error) {
-                  return MessageDisplay(message: state.message);
-                }
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height / 3,
-                  child: const Placeholder(),
-                );
-              },
-            ),
-            const SizedBox(height: 20),
-            const BossesControls()
-          ],
+  BlocProvider<BossesBloc> buildBody(BuildContext context) {
+    return BlocProvider(
+      create: (_) => serviceLocator<BossesBloc>(),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              BlocBuilder<BossesBloc, BossesState>(
+                builder: (context, state) {
+                  if (state is Empty) {
+                    return const MessageDisplay(message: 'Start Searching!');
+                  } else if (state is Loading) {
+                    return const LoadingWidget();
+                  } else if (state is Loaded) {
+                    return BossItem(bosses: state.bosses);
+                  } else if (state is Error) {
+                    return MessageDisplay(message: state.message);
+                  }
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 3,
+                    child: const Placeholder(),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              const BossesControls(),
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
