@@ -1,8 +1,9 @@
 import 'package:elden_ring_cl/features/bosses/presentation/bloc/bosses_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'injection_container.dart' as di;
+
 import 'features/bosses/presentation/pages/bosses_screen.dart';
+import 'injection_container.dart' as di;
 import 'injection_container.dart';
 
 void main() async {

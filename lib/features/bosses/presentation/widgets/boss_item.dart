@@ -1,10 +1,10 @@
-import 'package:elden_ring_cl/features/bosses/domain/entities/bosses.dart';
+import 'package:elden_ring_cl/features/bosses/domain/entities/bosses_entities.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants/my_colors.dart';
 
 class BossItem extends StatelessWidget {
-  final Bosses bosses;
+  final BossesEntities bosses;
 
   const BossItem({super.key, required this.bosses});
 
@@ -25,7 +25,7 @@ class BossItem extends StatelessWidget {
           color: MyColors.buttonText.withOpacity(0.5),
           alignment: Alignment.topCenter,
           child: Text(
-            bosses.location,
+            bosses.data[0].name,
             style: const TextStyle(
               height: 1.3,
               fontSize: 16,
@@ -44,7 +44,7 @@ class BossItem extends StatelessWidget {
           color: MyColors.buttonText,
           alignment: Alignment.bottomCenter,
           child: Text(
-            bosses.name,
+            bosses.data[2].description,
             style: const TextStyle(
               height: 1.3,
               fontSize: 16,
@@ -61,12 +61,12 @@ class BossItem extends StatelessWidget {
           children: [
             Container(
               color: MyColors.tertiary,
-              child: bosses.image.isNotEmpty
+              child: bosses.data[1].image.toString().isNotEmpty
                   ? FadeInImage.assetNetwork(
                       width: double.infinity,
                       height: double.infinity,
                       placeholder: 'assets/images/loading_sword.gif',
-                      image: bosses.image,
+                      image: bosses.data[1].image.toString(),
                       fit: BoxFit.cover,
                     )
                   : Image.asset('assets/image/placeholder.png'),

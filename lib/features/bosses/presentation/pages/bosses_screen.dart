@@ -1,14 +1,14 @@
-import 'package:elden_ring_cl/features/bosses/domain/entities/bosses.dart';
-import 'package:elden_ring_cl/features/bosses/presentation/widgets/bosses_display.dart';
-import 'package:elden_ring_cl/features/bosses/presentation/widgets/loading_widget.dart';
-import 'package:elden_ring_cl/features/bosses/presentation/widgets/message_display.dart';
+import 'package:elden_ring_cl/features/bosses/domain/entities/bosses_entities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../constants/my_colors.dart';
 import '../../../../injection_container.dart';
 import '../bloc/bosses_bloc.dart';
 import '../widgets/boss_item.dart';
-import '../widgets/bosses_controls.dart';
+import '../widgets/bosses_display.dart';
+import '../widgets/loading_widget.dart';
+import '../widgets/message_display.dart';
 
 class BossesScreen extends StatefulWidget {
   const BossesScreen({super.key});
@@ -18,13 +18,49 @@ class BossesScreen extends StatefulWidget {
 }
 
 class _BossesScreenState extends State<BossesScreen> {
-  late List<Bosses> allBosses;
+  //late List<BossesEntities> all bosses -> this what I used before
+  late List<BossesEntities> allBosses;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    //BlocProvider.of<BossesBloc>(context).add(GetForBosses());
+    BlocProvider.of<BossesBloc>(context).add(GetForBosses());
+  }
+
+  //To display allBosses list.
+  Widget buildBossesList() {
+    return GridView.builder(
+        //The grid and all it's properties
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 2 / 3,
+          crossAxisSpacing: 1,
+          mainAxisSpacing: 1,
+        ),
+        shrinkWrap: true,
+        physics: const ClampingScrollPhysics(),
+        padding: EdgeInsets.zero,
+        itemCount: allBosses.length,
+        itemBuilder: (context, index) {
+          return BossItem(
+            bosses: allBosses[index],
+          );
+        });
+  }
+
+  //To return the built grid with the characters in a SingleChildScrollView.
+  Widget buildLoadedListWidget() {
+    return SingleChildScrollView(
+      child: Container(
+        color: MyColors.backGround,
+        child: Column(
+          children: [
+            buildBossesList(),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -50,23 +86,34 @@ class _BossesScreenState extends State<BossesScreen> {
               const SizedBox(height: 10),
               BlocBuilder<BossesBloc, BossesState>(
                 builder: (context, state) {
-                  if (state is Empty) {
-                    return const MessageDisplay(message: 'Start Searching!');
-                  } else if (state is Loading) {
+                  if (state is Loading) {
                     return const LoadingWidget();
                   } else if (state is Loaded) {
-                    return BossItem(bosses: state.bosses);
+                    return BossesDisplay(
+                      bosses: (state).bosses,
+                    );
                   } else if (state is Error) {
                     return MessageDisplay(message: state.message);
+                  } else if (state is Empty) {
+                    return const MessageDisplay(message: 'State is Empty');
                   }
                   return SizedBox(
                     height: MediaQuery.of(context).size.height / 3,
                     child: const Placeholder(),
                   );
+
+                  /*
+                  if (state is Loaded) {
+                    allBosses = (state).bosses as List<BossesEntities>;
+                    return buildLoadedListWidget();
+                  }
+                  return SizedBox();
+
+                   */
                 },
               ),
-              const SizedBox(height: 20),
-              const BossesControls(),
+              //const SizedBox(height: 20),
+              //const BossesControls(),
             ],
           ),
         ),

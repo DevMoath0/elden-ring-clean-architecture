@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:elden_ring_cl/features/bosses/domain/entities/bosses_entities.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../../../core/error/failures.dart';
-import '../../domain/entities/bosses.dart';
 import '../../domain/usecases/get_bosses.dart';
 
 part 'bosses_event.dart';
@@ -34,6 +34,7 @@ class BossesBloc extends Bloc<BossesEvent, BossesState> {
         emit(Error(message: _mapFailureToMessage(failure)));
       },
       (bosses) {
+        debugPrint(bosses.data[0].toString());
         emit(Loaded(bosses: bosses));
       },
     );

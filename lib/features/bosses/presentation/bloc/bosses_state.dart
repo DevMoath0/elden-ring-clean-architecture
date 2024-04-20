@@ -8,7 +8,7 @@ sealed class BossesState extends Equatable {
 final class BossesInitial extends BossesState {
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 final class Empty extends BossesState {
@@ -22,7 +22,7 @@ class Loading extends BossesState {
 }
 
 class Loaded extends BossesState {
-  final Bosses bosses;
+  final BossesEntities bosses;
 
   Loaded({required this.bosses});
 

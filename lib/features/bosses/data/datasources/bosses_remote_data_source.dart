@@ -1,18 +1,16 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:elden_ring_cl/features/bosses/data/models/bosses_model.dart';
-
-import '../../../../constants/strings.dart';
-import '../../../../core/error/exceptions.dart';
-import '../../domain/entities/bosses.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../../core/error/exceptions.dart';
 
 abstract class BossesRemoteDataSource {
   /// Calls the https://eldenring.fanapis.com/api/bosses endpoint
   ///
   /// Throws a [ServerException] for all error codes
-  Future<BossesModel> getAllBosses();
+  Future<BossesModel> getAllBossesFromApi();
 }
 
 class BossesRemoteDataSourceImpl implements BossesRemoteDataSource {
@@ -21,25 +19,26 @@ class BossesRemoteDataSourceImpl implements BossesRemoteDataSource {
   BossesRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<BossesModel> getAllBosses() {
-    return _getAllBossesFromUrl('https://eldenring.fanapis.com/api/bosses');
+  Future<BossesModel> getAllBossesFromApi() {
+    return _getAllBossesFromUrl();
   }
 
-  Future<BossesModel> _getAllBossesFromUrl(String url) async {
+  Future<BossesModel> _getAllBossesFromUrl() async {
     final response = await client.get(
-      Uri.parse(url),
+      Uri.parse('https://eldenring.fanapis.com/api/bosses'),
       headers: {
         "Content-type": "application/json",
       },
     );
 
     if (response.statusCode == 200) {
-      print("Yes");
-      print(response.body.toString());
-      print('*****************************');
+      // Since the response is a Map<String, dynamic> I converted it to a json form.
+      debugPrint(response.statusCode.toString() +
+          '************************** yes the response is true ');
+      debugPrint(
+          BossesModel.fromJson(jsonDecode(response.body)).success.toString());
       return BossesModel.fromJson(jsonDecode(response.body));
     } else {
-      print('No');
       throw ServerException();
     }
   }

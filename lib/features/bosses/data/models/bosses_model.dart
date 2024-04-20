@@ -1,28 +1,36 @@
-import 'package:meta/meta.dart';
-import '../../domain/entities/bosses.dart';
+import '../../domain/entities/bosses_entities.dart';
+import 'boss_model.dart';
 
-class BossesModel extends Bosses {
-  const BossesModel(
-      {required super.name,
-      required super.image,
-      required super.description,
-      required super.location});
+class BossesModel extends BossesEntities {
+  const BossesModel({
+    required super.success,
+    required super.count,
+    required super.total,
+    required super.data,
+  });
 
   factory BossesModel.fromJson(Map<String, dynamic> json) {
     return BossesModel(
-      name: json['name'],
-      image: json['image'],
-      description: json['description'],
-      location: json['location'],
+      success: json['success'],
+      count: json['count'],
+      total: json['total'],
+      data: (json['data'] as List<dynamic>)
+          .map((bossJson) => BossModel.fromJson(bossJson))
+          .toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
-      'image': image,
-      'description': description,
-      'location': location,
+      'success': success,
+      'count': count,
+      'total': total,
+      'data': data,
     };
+  }
+
+  @override
+  String toString() {
+    return "Details are {$success Count:$count Total: $total Data:$data}";
   }
 }

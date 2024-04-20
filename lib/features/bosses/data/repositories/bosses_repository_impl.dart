@@ -4,8 +4,7 @@ import 'package:elden_ring_cl/core/error/failures.dart';
 import 'package:elden_ring_cl/core/network/network_info.dart';
 import 'package:elden_ring_cl/features/bosses/data/datasources/bosses_local_data_source.dart';
 import 'package:elden_ring_cl/features/bosses/data/datasources/bosses_remote_data_source.dart';
-import 'package:elden_ring_cl/features/bosses/data/models/bosses_model.dart';
-import 'package:elden_ring_cl/features/bosses/domain/entities/bosses.dart';
+import 'package:elden_ring_cl/features/bosses/domain/entities/bosses_entities.dart';
 import 'package:elden_ring_cl/features/bosses/domain/repositories/bosses_repository.dart';
 
 class BossesRepositoryImpl implements BossesRepository {
@@ -20,19 +19,22 @@ class BossesRepositoryImpl implements BossesRepository {
   });
 
   @override
-  Future<Either<Failure, Bosses>> getBosses() async {
+  Future<Either<Failure, BossesEntities>> getBosses() async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteTrivia = await getBosses();
-        localDataSource.cacheNumberTrivia(remoteTrivia as BossesModel);
-        return Right(remoteTrivia as Bosses);
+        final remoteBosses = await remoteDataSource.getAllBossesFromApi();
+
+        localDataSource.bossesCache(remoteBosses);
+
+        return Right(remoteBosses);
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
       try {
-        final localTrivia = await localDataSource.getLastBosses();
-        return Right(localTrivia);
+        final localBosses = await localDataSource.getLastBosses();
+
+        return Right(localBosses);
       } on CacheException {
         return Left(CacheFailure());
       }
