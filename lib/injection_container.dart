@@ -7,9 +7,8 @@ import 'package:elden_ring_cl/features/bosses/domain/repositories/bosses_reposit
 import 'package:elden_ring_cl/features/bosses/domain/usecases/get_bosses.dart';
 import 'package:elden_ring_cl/features/bosses/presentation/bloc/bosses_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/network/network_info.dart';
 
@@ -20,7 +19,7 @@ Future<void> init() async {
   // Bloc
   // Note: Remember whenever you do disposal logic use a Factory
   // not a Singleton to not get the same instance.
-  serviceLocator.registerFactory(
+  serviceLocator.registerLazySingleton(
     () => BossesBloc(
       getBosses: serviceLocator(),
     ),

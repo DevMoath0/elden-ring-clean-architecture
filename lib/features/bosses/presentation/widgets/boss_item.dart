@@ -65,7 +65,7 @@ class BossItem extends StatelessWidget {
                   ? FadeInImage.assetNetwork(
                       width: double.infinity,
                       height: double.infinity,
-                      placeholder: 'assets/images/loading_sword.gif',
+                      placeholder: 'images/loading_sword.gif',
                       image: bosses.data[1].image.toString(),
                       fit: BoxFit.cover,
                     )

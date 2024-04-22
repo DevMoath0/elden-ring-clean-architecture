@@ -1,4 +1,4 @@
-import 'package:elden_ring_cl/features/bosses/domain/entities/bosses_entities.dart';
+import 'package:elden_ring_cl/features/bosses/data/models/bosses_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,7 +6,6 @@ import '../../../../constants/my_colors.dart';
 import '../../../../injection_container.dart';
 import '../bloc/bosses_bloc.dart';
 import '../widgets/boss_item.dart';
-import '../widgets/bosses_display.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/message_display.dart';
 
@@ -19,7 +18,7 @@ class BossesScreen extends StatefulWidget {
 
 class _BossesScreenState extends State<BossesScreen> {
   //late List<BossesEntities> all bosses -> this what I used before
-  late List<BossesEntities> allBosses;
+  late List<BossesModel> allBosses;
 
   @override
   void initState() {
@@ -89,13 +88,9 @@ class _BossesScreenState extends State<BossesScreen> {
                   if (state is Loading) {
                     return const LoadingWidget();
                   } else if (state is Loaded) {
-                    return BossesDisplay(
-                      bosses: (state).bosses,
-                    );
+                    return buildLoadedListWidget();
                   } else if (state is Error) {
                     return MessageDisplay(message: state.message);
-                  } else if (state is Empty) {
-                    return const MessageDisplay(message: 'State is Empty');
                   }
                   return SizedBox(
                     height: MediaQuery.of(context).size.height / 3,

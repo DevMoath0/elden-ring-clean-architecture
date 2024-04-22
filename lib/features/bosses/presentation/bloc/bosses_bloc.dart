@@ -42,13 +42,12 @@ class BossesBloc extends Bloc<BossesEvent, BossesState> {
 
   // Instead of using ternary operator to decide which failure message to provide.
   String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case serverFailureMessage:
-        return serverFailureMessage;
-      case cacheFailureMessage:
-        return cacheFailureMessage;
-      default:
-        return 'Unexpected Error';
+    if (failure is ServerFailure) {
+      return serverFailureMessage;
+    } else if (failure is CacheFailure) {
+      return cacheFailureMessage;
+    } else {
+      return 'Unexpected Error';
     }
   }
 }
