@@ -1,9 +1,10 @@
-import 'package:elden_ring_cl/features/bosses/data/models/bosses_model.dart';
+import 'package:elden_ring_cl/features/bosses/presentation/widgets/temp_single_boss.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/my_colors.dart';
 import '../../../../injection_container.dart';
+import '../../domain/entities/bosses_entities.dart';
 import '../bloc/bosses_bloc.dart';
 import '../widgets/boss_item.dart';
 import '../widgets/loading_widget.dart';
@@ -17,8 +18,8 @@ class BossesScreen extends StatefulWidget {
 }
 
 class _BossesScreenState extends State<BossesScreen> {
-  //late List<BossesEntities> all bosses -> this what I used before
-  late List<BossesModel> allBosses;
+  late List<BossesEntities> allBosses;
+  //late List<BossesModel> allBosses;
 
   @override
   void initState() {
@@ -88,7 +89,7 @@ class _BossesScreenState extends State<BossesScreen> {
                   if (state is Loading) {
                     return const LoadingWidget();
                   } else if (state is Loaded) {
-                    return buildLoadedListWidget();
+                    return TempSingleBoss(bosses: state.bosses);
                   } else if (state is Error) {
                     return MessageDisplay(message: state.message);
                   }
