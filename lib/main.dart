@@ -1,8 +1,8 @@
-import 'package:elden_ring_cl/features/bosses/presentation/bloc/bosses_bloc.dart';
+import 'package:elden_ring_cl/features/boss/presentation/bloc/home_bosses_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'features/bosses/presentation/pages/bosses_screen.dart';
+import 'features/boss/presentation/pages/bosses_screen.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<BossesBloc>(),
+      create: (_) => serviceLocator<HomeBossesBloc>(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'BossesScreen',

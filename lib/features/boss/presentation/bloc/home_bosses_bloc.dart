@@ -1,32 +1,30 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:elden_ring_cl/features/bosses/domain/entities/bosses_entities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../core/error/failures.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../domain/entities/boss.dart';
 import '../../domain/usecases/get_bosses.dart';
 
-part 'bosses_event.dart';
-part 'bosses_state.dart';
+part 'home_bosses_event.dart';
+part 'home_bosses_state.dart';
 
-const String serverFailureMessage = 'Server Failure';
-const String cacheFailureMessage = 'Cache Failure';
+const String SERVER_FAILURE_MESSAGE = 'Server Failure';
+const String CACHE_FAILURE_MESSAGE = 'Cache Failure';
 
-class BossesBloc extends Bloc<BossesEvent, BossesState> {
+class HomeBossesBloc extends Bloc<HomeEvent, HomeBossesState> {
   final GetBosses getBosses;
 
-  BossesBloc({required this.getBosses}) : super(Empty()) {
-    on<GetForBosses>(_getBossesHandler);
+  HomeBossesBloc({required this.getBosses}) : super(Init()) {
+    on<GetBossesEvent>(_getBossesHandler);
   }
 
-  // For the Bosses
-  Future<void> _getBossesHandler(
-    GetForBosses event,
-    Emitter<BossesState> emit,
-  ) async {
-    print('In handler *********************************');
+  FutureOr<void> _getBossesHandler(
+      GetBossesEvent event, Emitter<HomeBossesState> emit) async {
     emit(Loading());
-
     final result = await getBosses(NoParams());
 
     result.fold(
@@ -34,7 +32,7 @@ class BossesBloc extends Bloc<BossesEvent, BossesState> {
         emit(Error(message: _mapFailureToMessage(failure)));
       },
       (bosses) {
-        debugPrint(bosses.data[0].toString());
+        debugPrint("${bosses.length}*********************** Bosses length");
         emit(Loaded(bosses: bosses));
       },
     );
@@ -43,9 +41,9 @@ class BossesBloc extends Bloc<BossesEvent, BossesState> {
   // Instead of using ternary operator to decide which failure message to provide.
   String _mapFailureToMessage(Failure failure) {
     if (failure is ServerFailure) {
-      return serverFailureMessage;
+      return SERVER_FAILURE_MESSAGE;
     } else if (failure is CacheFailure) {
-      return cacheFailureMessage;
+      return CACHE_FAILURE_MESSAGE;
     } else {
       return 'Unexpected Error';
     }
