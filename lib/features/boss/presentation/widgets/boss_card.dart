@@ -26,6 +26,7 @@ class _BossCardState extends State<BossCard> {
     return GestureDetector(
       onTap: () {},
       child: Card(
+        color: Colors.transparent,
         child: Column(
           children: [
             AspectRatio(
@@ -43,7 +44,10 @@ class _BossCardState extends State<BossCard> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(boss.name),
+                child: Text(
+                  boss.name,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             )
           ],

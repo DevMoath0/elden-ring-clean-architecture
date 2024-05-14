@@ -25,9 +25,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'BossesScreen',
         home: const BossesScreen(),
-        theme: ThemeData(
-          primaryColor: Colors.red,
-        ),
       ),
     );
   }
