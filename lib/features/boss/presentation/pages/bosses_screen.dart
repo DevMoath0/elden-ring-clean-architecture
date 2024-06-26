@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:elden_ring_cl/features/boss/presentation/bloc/home_bosses_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,70 +20,16 @@ class _BossesScreenState extends State<BossesScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Water Reminder'),
+        title: const Text('Bosses'),
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
       ),
-      body: buildBody(context),
-    );
-  }
-
-  Container buildBody(BuildContext context) {
-    return Container(
-      child: BlocProvider(
+      body: BlocProvider(
         create: (_) => serviceLocator<HomeBossesBloc>(),
-        child: Stack(
-          children: [
-            Align(
-              alignment: const AlignmentDirectional(3, -0.3),
-              child: Container(
-                height: 300,
-                width: 300,
-                decoration: const BoxDecoration(color: Colors.white60),
-              ),
-            ),
-            Align(
-              alignment: const AlignmentDirectional(-3, -0.3),
-              child: Container(
-                height: 300,
-                width: 300,
-                decoration: const BoxDecoration(color: Colors.blueAccent),
-              ),
-            ),
-            Align(
-              alignment: const AlignmentDirectional(0, -1.2),
-              child: Container(
-                height: 300,
-                width: 300,
-                decoration: const BoxDecoration(color: Colors.blueAccent),
-              ),
-            ),
-            BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 100,
-                sigmaY: 100,
-              ),
-              child: Container(
-                decoration: const BoxDecoration(color: Colors.transparent),
-              ),
-            ),
-            Align(
-              child: Image.asset(
-                'images/water.png',
-                width: 300,
-                height: 300,
-              ),
-              alignment: AlignmentDirectional(0, -0.5),
-            )
-            /*
-            BlocBuilder<HomeBossesBloc, HomeBossesState>(
-              builder: (context, state) {
-                return currentStateWidget(context, state);
-              },
-            ),
-
-             */
-          ],
+        child: BlocBuilder<HomeBossesBloc, HomeBossesState>(
+          builder: (context, state) {
+            return currentStateWidget(context, state);
+          },
         ),
       ),
     );
